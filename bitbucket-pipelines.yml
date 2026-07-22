@@ -1,56 +1,8 @@
-image: atlassian/default-image:3
-
-definitions:
-  services:
-    docker:
-      memory: 7168
-
-  steps:
-    - step: &build-push-client
-        name: 🏗️ Build & Push MagiHub Client (GHCR, público)
-        services:
-          - docker
-        caches:
-          - docker
-        script:
-          # 1️⃣ VARIABLES BASE ------------------------------------------
-          - export GHCR_OWNER="mbarriosrojas"
-          - export IMAGE_TAG_COMMIT="ghcr.io/${GHCR_OWNER}/magihub-client:${BITBUCKET_COMMIT}"
-          - export IMAGE_TAG_LATEST="ghcr.io/${GHCR_OWNER}/magihub-client:latest"
-
-          - echo "🧩 Commit -> $BITBUCKET_COMMIT"
-          - echo "🧩 Client Image -> $IMAGE_TAG_COMMIT"
-
-          # 2️⃣ LOGIN A GHCR ---------------------------------------------
-          # GHCR_TOKEN = Personal Access Token de GitHub con permiso write:packages
-          # (Repository variable "Secured" en Bitbucket).
-          - echo "🔐 Logeando en GHCR..."
-          - echo "$GHCR_TOKEN" | docker login ghcr.io -u "$GHCR_OWNER" --password-stdin
-
-          # 3️⃣ BUILD DE IMAGEN (branding MagiHub ya está en el código) --
-          - export DOCKER_BUILDKIT=1
-          - echo "🎨 Construyendo imagen de MagiHub Client..."
-          - docker build -t ${IMAGE_TAG_COMMIT} -t ${IMAGE_TAG_LATEST} -f Dockerfile --target node .
-
-          # 4️⃣ PUSH A GHCR (2 tags: commit inmutable + latest) ----------
-          - echo "📤 Subiendo imagen a GHCR..."
-          - docker push ${IMAGE_TAG_COMMIT}
-          - docker push ${IMAGE_TAG_LATEST}
-
-          - echo "✅ Build y push completados."
-          - echo "   ${IMAGE_TAG_COMMIT}"
-          - echo "   ${IMAGE_TAG_LATEST}"
-          - echo "⚠️  Primera vez -> ve a github.com/${GHCR_OWNER}?tab=packages y marca"
-          - echo "    el paquete 'magihub-client' como PÚBLICO (nace privado por defecto)."
-
-          # Nota: esta imagen NO se despliega a un servidor fijo — la jalan
-          # dinámicamente los LibreChat hosts vía magihub-control cuando se
-          # aprovisiona/actualiza un tenant (docker compose pull), usando
-          # LIBRECHAT_IMAGE_BASE=ghcr.io/mbarriosrojas/magihub-client en
-          # magihub-control y LIBRECHAT_DEFAULT_VERSION=latest en magihub-api.
-          # Al ser pública, el host NO necesita login para el pull.
-
-pipelines:
-  branches:
-    main:
-      - step: *build-push-client
+# La publicación de la imagen de magihub-client se movió a GitHub Actions
+# (.github/workflows/publish.yml en github.com/mbarriosRojas/magihub-client),
+# igual que hace el proyecto original de LibreChat — así no requiere ningún
+# token/credencial manual (GITHUB_TOKEN lo provee GitHub automáticamente).
+#
+# Este repo de Bitbucket sigue siendo un mirror del código para mantener el
+# mismo flujo que los demás repos magihub-*, pero el build+push de la imagen
+# Docker se dispara solo en GitHub.

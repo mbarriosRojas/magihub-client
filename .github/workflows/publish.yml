@@ -1,0 +1,40 @@
+name: Publish MagiHub Client image
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # No requiere ningún token/secreto manual: GITHUB_TOKEN lo provee
+      # GitHub automáticamente y tiene permiso de escritura sobre GHCR
+      # gracias a `permissions.packages: write` arriba.
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          target: node
+          push: true
+          tags: |
+            ghcr.io/mbarriosrojas/magihub-client:latest
+            ghcr.io/mbarriosrojas/magihub-client:${{ github.sha }}
