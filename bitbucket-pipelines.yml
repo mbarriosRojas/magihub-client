@@ -1,0 +1,58 @@
+image: atlassian/default-image:3
+
+definitions:
+  services:
+    docker:
+      memory: 7168
+
+  steps:
+    - step: &build-push-client
+        name: 🏗️ Build & Push MagiHub Client (Main)
+        services:
+          - docker
+        caches:
+          - docker
+        script:
+          # 1️⃣ VARIABLES BASE ------------------------------------------
+          - export IMAGE_TAG_COMMIT="${ECR_URI}:magi-client-${BITBUCKET_COMMIT}"
+          - export IMAGE_TAG_LATEST="${ECR_URI}:magi-client-latest"
+
+          - echo "🧩 Commit -> $BITBUCKET_COMMIT"
+          - echo "🧩 Client Image -> $IMAGE_TAG_COMMIT"
+
+          # 2️⃣ DEPENDENCIAS --------------------------------------------
+          - apt-get update && apt-get install -y awscli
+
+          # 3️⃣ CONFIGURAR AWS ------------------------------------------
+          - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+          - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+          - aws configure set default.region $AWS_REGION
+
+          # 4️⃣ LOGIN A ECR ---------------------------------------------
+          - echo "🔐 Logeando en ECR..."
+          - aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin ${ECR_URI}
+
+          # 5️⃣ BUILD DE IMAGEN (branding MagiHub ya está en el código) --
+          - export DOCKER_BUILDKIT=1
+          - echo "🎨 Construyendo imagen de MagiHub Client..."
+          - docker build -t ${IMAGE_TAG_COMMIT} -t ${IMAGE_TAG_LATEST} -f Dockerfile --target node .
+
+          # 6️⃣ PUSH A ECR (2 tags: commit inmutable + latest) ----------
+          - echo "📤 Subiendo imagen al ECR..."
+          - docker push ${IMAGE_TAG_COMMIT}
+          - docker push ${IMAGE_TAG_LATEST}
+
+          - echo "✅ Build y push completados."
+          - echo "   ${IMAGE_TAG_COMMIT}"
+          - echo "   ${IMAGE_TAG_LATEST}"
+
+          # Nota: esta imagen NO se despliega a un servidor fijo — la jalan
+          # dinámicamente los LibreChat hosts vía magihub-control cuando se
+          # aprovisiona/actualiza un tenant (docker compose pull), usando
+          # LIBRECHAT_IMAGE_BASE=${ECR_URI} y LIBRECHAT_DEFAULT_VERSION=magi-client-latest
+          # en el .env de magihub-api / magihub-control respectivamente.
+
+pipelines:
+  branches:
+    main:
+      - step: *build-push-client
