@@ -51,7 +51,7 @@ export default function Action({
         className="w-full justify-center gap-2"
       >
         {isToolAuthenticated ? (
-          <CircleCheck className="h-4 w-4 text-green-500" aria-hidden="true" />
+          <CircleCheck className="h-4 w-4 text-orange-500" aria-hidden="true" />
         ) : (
           <KeyRound className="h-4 w-4" aria-hidden="true" />
         )}

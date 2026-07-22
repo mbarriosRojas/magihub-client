@@ -79,7 +79,7 @@ export default function AdvancedPanel() {
                   <Copy className="h-3.5 w-3.5" aria-hidden="true" />
                 </span>
                 <span className="t-icon" data-icon="b">
-                  <Check className="h-3.5 w-3.5 text-green-500" aria-hidden="true" />
+                  <Check className="h-3.5 w-3.5 text-orange-500" aria-hidden="true" />
                 </span>
               </span>
             </button>

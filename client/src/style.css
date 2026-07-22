@@ -33,6 +33,9 @@
   --green-800: #065f46;
   --green-900: #064e3b;
   --green-950: #022c22;
+  /* MagiHub brand orange — usado por --surface-submit (botón principal: enviar/login) */
+  --brand-orange-700: #ff5500;
+  --brand-orange-800: #cc4400;
   --red-50: #fef2f2;
   --red-100: #fee2e2;
   --red-200: #fecaca;
@@ -158,8 +161,8 @@ html {
   --surface-tertiary: var(--gray-100);
   --surface-tertiary-alt: var(--white);
   --surface-dialog: var(--white);
-  --surface-submit: var(--green-700);
-  --surface-submit-hover: var(--green-800);
+  --surface-submit: var(--brand-orange-700);
+  --surface-submit-hover: var(--brand-orange-800);
   --surface-destructive: var(--red-700);
   --surface-destructive-hover: var(--red-800);
   --surface-chat: var(--white);
@@ -220,8 +223,8 @@ html {
   --surface-tertiary: var(--gray-700);
   --surface-tertiary-alt: var(--gray-700);
   --surface-dialog: var(--gray-850);
-  --surface-submit: var(--green-700);
-  --surface-submit-hover: var(--green-800);
+  --surface-submit: var(--brand-orange-700);
+  --surface-submit-hover: var(--brand-orange-800);
   --surface-destructive: var(--red-800);
   --surface-destructive-hover: var(--red-900);
   --surface-chat: var(--gray-700);

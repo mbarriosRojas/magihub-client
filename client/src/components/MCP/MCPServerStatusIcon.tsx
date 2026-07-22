@@ -125,7 +125,7 @@ function CompactStatusDot({ serverStatus, isInitializing }: CompactStatusDotProp
 
   let colorClass = 'bg-gray-400';
   if (connectionState === 'connected') {
-    colorClass = 'bg-green-500';
+    colorClass = 'bg-orange-500';
   } else if (connectionState === 'connecting') {
     colorClass = 'bg-blue-500';
   } else if (connectionState === 'error') {

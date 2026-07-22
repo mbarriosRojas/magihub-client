@@ -93,7 +93,7 @@ export default function VersionItem({
           <div
             className={cn(
               'absolute -bottom-3 top-0 w-px',
-              isActive ? 'bg-green-500/40' : 'bg-border-light',
+              isActive ? 'bg-orange-500/40' : 'bg-border-light',
             )}
           />
         )}
@@ -101,7 +101,7 @@ export default function VersionItem({
           className={cn(
             'relative z-10 mt-4 flex size-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors',
             isActive
-              ? 'border-green-500 bg-green-500 text-white'
+              ? 'border-orange-500 bg-orange-500 text-white'
               : 'border-border-medium bg-surface-primary text-text-secondary',
           )}
           aria-hidden="true"
@@ -119,7 +119,7 @@ export default function VersionItem({
         className={cn(
           'group relative mb-2 ml-2 flex flex-1 flex-col rounded-xl border p-3 transition-colors',
           isActive
-            ? 'border-green-500/40 bg-green-50/60 dark:border-green-500/30 dark:bg-green-950/20'
+            ? 'border-orange-500/40 bg-orange-50/60 dark:border-orange-500/30 dark:bg-orange-950/20'
             : 'border-border-light bg-transparent hover:border-border-medium hover:bg-surface-secondary',
         )}
       >
@@ -129,14 +129,14 @@ export default function VersionItem({
               <span
                 className={cn(
                   'truncate text-sm font-semibold',
-                  isActive ? 'text-green-700 dark:text-green-300' : 'text-text-primary',
+                  isActive ? 'text-orange-700 dark:text-orange-300' : 'text-text-primary',
                 )}
               >
                 {versionTitle}
               </span>
               {isActive && (
-                <span className="inline-flex items-center gap-1 rounded-full bg-green-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-green-700 dark:text-green-300">
-                  <span className="size-1.5 rounded-full bg-green-500" aria-hidden="true" />
+                <span className="inline-flex items-center gap-1 rounded-full bg-orange-500/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-orange-700 dark:text-orange-300">
+                  <span className="size-1.5 rounded-full bg-orange-500" aria-hidden="true" />
                   {localize('com_ui_agent_version_current')}
                 </span>
               )}
@@ -200,7 +200,7 @@ export default function VersionItem({
                 selection={{
                   selectHandler: () => onRestore(index),
                   selectClasses:
-                    'bg-green-600 hover:bg-green-700 dark:hover:bg-green-700 text-white',
+                    'bg-orange-600 hover:bg-orange-700 dark:hover:bg-orange-700 text-white',
                   selectText: localize('com_ui_agent_version_restore'),
                 }}
               />

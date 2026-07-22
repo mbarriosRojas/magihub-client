@@ -39,7 +39,7 @@ function AuthLayout({
         <div className="mx-auto sm:max-w-sm">
           <ErrorMessage>
             {localize('com_auth_error_invalid_reset_token')}{' '}
-            <a className="font-semibold text-green-600 hover:underline" href="/forgot-password">
+            <a className="font-semibold text-orange-600 hover:underline" href="/forgot-password">
               {localize('com_auth_click_here')}
             </a>{' '}
             {localize('com_auth_to_try_again')}
@@ -60,12 +60,14 @@ function AuthLayout({
     <div className="relative flex min-h-screen flex-col bg-white dark:bg-gray-900">
       <Banner />
       <BlinkAnimation active={isFetching}>
-        <div className="mt-6 h-10 w-full bg-cover">
-          <img
-            src="assets/logo.svg"
-            className="h-full w-full object-contain"
-            alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'LibreChat' })}
-          />
+        <div className="mt-6 flex w-full justify-center">
+          <div className="inline-flex items-center rounded-xl bg-[#E8DCC4] px-6 py-2 dark:bg-[#3d3527]">
+            <img
+              src="assets/logo.png"
+              className="h-8 w-auto object-contain"
+              alt={localize('com_ui_logo', { 0: startupConfig?.appTitle ?? 'MagiHub' })}
+            />
+          </div>
         </div>
       </BlinkAnimation>
       <DisplayError />
