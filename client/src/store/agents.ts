@@ -5,7 +5,7 @@ import { logger } from '~/utils';
 
 export const ephemeralAgentByConvoId = atomFamily<TEphemeralAgent | null, string>({
   key: 'ephemeralAgentByConvoId',
-  default: null,
+  default: { web_search: true },
   effects: [
     ({ onSet, node }) => {
       onSet(async (newValue) => {
