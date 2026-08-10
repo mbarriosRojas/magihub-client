@@ -84,6 +84,28 @@ const buildDefaultConvo = ({
 
   defaultConvo.tools = lastConversationSetup?.tools ?? lastSelectedTools ?? defaultConvo.tools;
 
+  // MagiHub: Web Search nativo activado por defecto en conversaciones nuevas —
+  // solo cuando no viene de un preset/setup previo (respeta un `false` explícito
+  // guardado por el tenant). Endpoints soportados según tConversationSchema.
+  const webSearchEndpoints: (EModelEndpoint | undefined | null)[] = [
+    EModelEndpoint.openAI,
+    EModelEndpoint.azureOpenAI,
+    EModelEndpoint.custom,
+    EModelEndpoint.anthropic,
+    EModelEndpoint.google,
+  ];
+  if (defaultConvo.web_search === undefined && webSearchEndpoints.includes(endpoint)) {
+    defaultConvo.web_search = true;
+    if (
+      (endpoint === EModelEndpoint.openAI ||
+        endpoint === EModelEndpoint.azureOpenAI ||
+        endpoint === EModelEndpoint.custom) &&
+      defaultConvo.useResponsesApi === undefined
+    ) {
+      defaultConvo.useResponsesApi = true;
+    }
+  }
+
   return defaultConvo;
 };
 
