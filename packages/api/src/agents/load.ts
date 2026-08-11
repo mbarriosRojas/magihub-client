@@ -32,7 +32,7 @@ export interface LoadAgentDeps {
 
 export interface LoadAgentParams {
   req: {
-    user?: { id?: string };
+    user?: { id?: string; email?: string };
     config?: AppConfig;
     body?: {
       promptPrefix?: string;
@@ -142,11 +142,20 @@ export async function loadEphemeralAgent(
     sender: sender as string,
   });
 
+  // MagiHub: identifica al usuario real ante magihub-proxy vía el campo `user`
+  // (estándar OpenAI-compatible) — es lo único que sobrevive intacto hasta la
+  // llamada real al proveedor (headers/Authorization solo llevan la apiKey
+  // compartida del endpoint, nunca al usuario). Sin esto, "Top usuarios por
+  // tokens" en el Control Room queda vacío aunque el total sí se contabilice.
+  const modelParametersWithUser = req.user?.email
+    ? { ...safeModelParameters, user: req.user.email }
+    : safeModelParameters;
+
   const result: Partial<Agent> = {
     id: ephemeralId,
     instructions,
     provider: endpoint,
-    model_parameters: safeModelParameters as AgentModelParameters,
+    model_parameters: modelParametersWithUser as AgentModelParameters,
     model,
     tools,
   };
